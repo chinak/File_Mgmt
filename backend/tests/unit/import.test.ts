@@ -49,6 +49,7 @@ describe('ImportService', () => {
     const r = svc.importFromBuffer(createExcelBuffer([validPaperRow('FA010'), validElectronicRow('FA011'), validPaperRow('FA012')]));
     expect(r.totalRows).toBe(3); expect(r.successCount).toBe(3);
   });
+
   it('缺少客户姓名应跳过并记录错误', () => {
     const row = validPaperRow('FA020'); delete row['客户姓名'];
     const r = svc.importFromBuffer(createExcelBuffer([row]));
@@ -88,6 +89,7 @@ describe('ImportService', () => {
     const r = svc.importFromBuffer(createExcelBuffer([validPaperRow('FA041')]));
     expect(r.failureCount).toBe(1); expect(r.errors[0].reason).toContain('FA041'); expect(r.errors[0].reason).toContain('已存在');
   });
+
   it('合法行和非法行混合导入，应正确统计', () => {
     const bad = validPaperRow('FA050'); bad['合同版本类型'] = '无效';
     const r = svc.importFromBuffer(createExcelBuffer([validPaperRow('FA051'), bad, validElectronicRow('FA052')]));
